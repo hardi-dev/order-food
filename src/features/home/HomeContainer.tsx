@@ -6,17 +6,52 @@ import {
   Image,
   Flex,
   Grid,
+  GridProps,
   IconButton,
+  IconButtonProps,
   Icon,
   IconProps,
   Button,
+  ButtonProps,
   Heading,
+  HeadingProps,
   Text,
+  TextProps,
+  FlexProps,
+  ImageProps,
 } from "@chakra-ui/react";
 import { Layout } from "@/components/Layout";
 import Link from "next/link";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 import foods from "@/data/foods.json";
+
+const MotionFlex = motion<FlexProps>(Flex);
+const MotionImage = motion<ImageProps>(Image);
+const MotionText = motion<TextProps>(Text);
+const MotionHeading = motion<HeadingProps>(Heading);
+const MotionIconButton = motion<IconButtonProps>(IconButton);
+const MotionButton = motion<ButtonProps>(Button);
+const MotionGrid = motion<GridProps>(Grid);
+
+const FadeUpVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
+const staggerVariants: Variants = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
 
 const ArrowIcon = (props: IconProps) => (
   <Icon viewBox="0 0 14 14" {...props}>
@@ -75,7 +110,7 @@ const Home: NextPage = () => {
               alignItems="center"
             >
               <Box w={585} h={560} mt={150}>
-                <Flex
+                <MotionFlex
                   w={560}
                   h={560}
                   border="2px"
@@ -85,7 +120,7 @@ const Home: NextPage = () => {
                   borderColor="orange.500"
                   borderStyle="dashed"
                   position="relative"
-                  transform={`rotate(-${ROTATION * active}deg)`}
+                  animate={{ rotate: `-${ROTATION * active}deg` }}
                 >
                   <Box w="1px" h="1px" position="relative">
                     {foods.map((item, idx) => (
@@ -109,7 +144,7 @@ const Home: NextPage = () => {
                       </Box>
                     ))}
                   </Box>
-                </Flex>
+                </MotionFlex>
               </Box>
             </Flex>
             <Flex
@@ -136,13 +171,19 @@ const Home: NextPage = () => {
                     justify="center"
                     alignItems="center"
                   >
-                    <Image
-                      w={280}
-                      h={280}
-                      src={foods[active].img}
-                      alt={foods[active].name}
-                      filter="drop-shadow(0px 0px 20px rgba(0, 0, 0, .2))"
-                    />
+                    <AnimatePresence exitBeforeEnter>
+                      <MotionImage
+                        w={280}
+                        h={280}
+                        src={foods[active].img}
+                        alt={foods[active].name}
+                        filter="drop-shadow(0px 0px 20px rgba(0, 0, 0, .2))"
+                        key={foods[active].slug}
+                        initial={{ opacity: 0, scale: 0, rotate: "-36deg" }}
+                        animate={{ opacity: 1, scale: 1, rotate: "0deg" }}
+                        exit={{ opacity: 0, scale: 0, rotate: "-36deg" }}
+                      />
+                    </AnimatePresence>
                   </Flex>
                   <Flex
                     position="absolute"
@@ -152,36 +193,54 @@ const Home: NextPage = () => {
                     h="40px"
                     justifyContent="space-between"
                   >
-                    <IconButton
+                    <MotionIconButton
                       aria-label="prev"
                       icon={<ArrowIcon color="white" />}
                       rounded="full"
                       colorScheme="orange"
                       onClick={handlePrev}
+                      whileTap={{ scale: 0.75 }}
+                      outline="none"
                     />
-                    <IconButton
+                    <MotionIconButton
                       aria-label="next"
                       icon={<ArrowIcon color="white" />}
                       rounded="full"
                       colorScheme="orange"
                       onClick={handleNext}
+                      whileTap={{ scale: 0.75 }}
+                      outline="none"
                     />
                   </Flex>
                 </Flex>
               </Box>
             </Flex>
-            <Grid
+            <MotionGrid
               w="full"
               gridTemplateColumns="3fr 2fr 3fr"
               pb="14"
               alignItems="flex-end"
               columnGap="8"
+              variants={staggerVariants}
+              initial="hidden"
+              animate="visible"
+              key={`details-${active}`}
             >
               <Flex flexDir="column">
-                <Heading color="orange.500">{`$${foods[active].price.raw}`}</Heading>
-                <Heading as="h1" size="2xl" lineHeight={1.2}>
+                <MotionHeading
+                  key={`price-${active}`}
+                  variants={FadeUpVariants}
+                  color="orange.500"
+                >{`$${foods[active].price.raw}`}</MotionHeading>
+                <MotionHeading
+                  key={`title-${active}`}
+                  variants={FadeUpVariants}
+                  as="h1"
+                  size="2xl"
+                  lineHeight={1.2}
+                >
                   {foods[active].name}
-                </Heading>
+                </MotionHeading>
               </Flex>
               <Flex justifyContent="center">
                 <Link href={`/thanks/${foods[active].slug}`} passHref>
@@ -191,11 +250,11 @@ const Home: NextPage = () => {
                 </Link>
               </Flex>
               <Flex justifyContent="flex-end">
-                <Text ml="16" textAlign="right">
+                <MotionText ml="16" textAlign="right" variants={FadeUpVariants}>
                   {foods[active].description}
-                </Text>
+                </MotionText>
               </Flex>
-            </Grid>
+            </MotionGrid>
           </Grid>
         </Container>
       </Box>
