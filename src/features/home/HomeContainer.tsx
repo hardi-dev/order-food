@@ -30,7 +30,28 @@ const ArrowIcon = (props: IconProps) => (
 );
 
 const Home: NextPage = () => {
+  const ROTATION = 36;
   const [active, setActive] = React.useState(0);
+
+  const handleNext = () => {
+    if (active < foods.length - 1) {
+      setActive(active + 1);
+    } else {
+      setActive(0);
+    }
+  };
+
+  const handlePrev = () => {
+    if (active > 0) {
+      setActive(active - 1);
+    } else {
+      setActive(foods.length - 1);
+    }
+  };
+
+  React.useEffect(() => {
+    console.log("rotation", ROTATION * active);
+  }, [active]);
 
   return (
     <Layout>
@@ -64,6 +85,7 @@ const Home: NextPage = () => {
                   borderColor="orange.500"
                   borderStyle="dashed"
                   position="relative"
+                  transform={`rotate(-${ROTATION * active}deg)`}
                 >
                   <Box w="1px" h="1px" position="relative">
                     {foods.map((item, idx) => (
@@ -135,12 +157,14 @@ const Home: NextPage = () => {
                       icon={<ArrowIcon color="white" />}
                       rounded="full"
                       colorScheme="orange"
+                      onClick={handlePrev}
                     />
                     <IconButton
                       aria-label="next"
                       icon={<ArrowIcon color="white" />}
                       rounded="full"
                       colorScheme="orange"
+                      onClick={handleNext}
                     />
                   </Flex>
                 </Flex>
