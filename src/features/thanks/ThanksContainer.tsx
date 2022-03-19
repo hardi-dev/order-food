@@ -5,14 +5,53 @@ import {
   Box,
   Image,
   Flex,
-  Grid,
   Button,
   Heading,
   Text,
+  FlexProps,
+  ImageProps,
+  TextProps,
+  HeadingProps,
+  ButtonProps,
 } from "@chakra-ui/react";
 import foods from "@/data/foods.json";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+
+const MotionFlex = motion<FlexProps>(Flex);
+const MotionImage = motion<ImageProps>(Image);
+const MotionText = motion<TextProps>(Text);
+const MotionHeading = motion<HeadingProps>(Heading);
+const MotionButton = motion<ButtonProps>(Button);
+
+const ButtonScaleVariants: Variants = {
+  hover: {
+    scale: 1.2,
+  },
+  tap: {
+    scale: 0.75,
+  },
+};
+
+const FadeUpVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
+const staggerVariants: Variants = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
 
 const Thanks = () => {
   const { query } = useRouter();
@@ -24,7 +63,7 @@ const Thanks = () => {
       <Box h="100vh" w="100vw" bg="orange.100">
         <Container maxW="container.xl" h="full">
           {!!food && (
-            <Flex
+            <MotionFlex
               h="full"
               w={560}
               pt={150}
@@ -32,12 +71,23 @@ const Thanks = () => {
               align="center"
               mx="auto"
               textAlign="center"
+              variants={staggerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              <Text>Thanks for ordering</Text>
-              <Heading color="orange" maxW={280} my="8">
+              <MotionText variants={FadeUpVariants}>
+                Thanks for ordering
+              </MotionText>
+              <MotionHeading
+                variants={FadeUpVariants}
+                color="orange"
+                maxW={280}
+                my="8"
+              >
                 {food.name}
-              </Heading>
-              <Image
+              </MotionHeading>
+              <MotionImage
+                variants={FadeUpVariants}
                 w={280}
                 h={280}
                 src={`/${food.img}`}
@@ -45,7 +95,8 @@ const Thanks = () => {
                 filter="drop-shadow(0px 0px 20px rgba(0, 0, 0, .2))"
               />
               <Link href="/" passHref>
-                <Button
+                <MotionButton
+                  variants={{ ...FadeUpVariants }}
                   colorScheme="orange"
                   rounded="full"
                   size="lg"
@@ -53,9 +104,9 @@ const Thanks = () => {
                   mt="8"
                 >
                   BACK TO HOME
-                </Button>
+                </MotionButton>
               </Link>
-            </Flex>
+            </MotionFlex>
           )}
         </Container>
       </Box>

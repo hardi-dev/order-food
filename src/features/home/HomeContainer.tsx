@@ -34,6 +34,15 @@ const MotionIconButton = motion<IconButtonProps>(IconButton);
 const MotionButton = motion<ButtonProps>(Button);
 const MotionGrid = motion<GridProps>(Grid);
 
+const ButtonScaleVariants: Variants = {
+  hover: {
+    scale: 1.2,
+  },
+  tap: {
+    scale: 0.75,
+  },
+};
+
 const FadeUpVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -199,8 +208,10 @@ const Home: NextPage = () => {
                       rounded="full"
                       colorScheme="orange"
                       onClick={handlePrev}
-                      whileTap={{ scale: 0.75 }}
                       outline="none"
+                      variants={ButtonScaleVariants}
+                      whileTap="tap"
+                      whileHover="hover"
                     />
                     <MotionIconButton
                       aria-label="next"
@@ -208,8 +219,10 @@ const Home: NextPage = () => {
                       rounded="full"
                       colorScheme="orange"
                       onClick={handleNext}
-                      whileTap={{ scale: 0.75 }}
                       outline="none"
+                      variants={ButtonScaleVariants}
+                      whileTap="tap"
+                      whileHover="hover"
                     />
                   </Flex>
                 </Flex>
