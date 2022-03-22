@@ -117,9 +117,9 @@ const Home: NextPage = () => {
               bg="orange.100"
               justifyContent="center"
               alignItems="center"
-              initial={{ clipPath: "circle(0% at 50% 0%)" }}
-              animate={{ clipPath: "circle(60% at 50% -80%)" }}
-              exit={{ clipPath: "circle(100% at 50% -80%)" }}
+              initial={{ clipPath: "ellipse(0% 0% at 50% 0%)" }}
+              animate={{ clipPath: "ellipse(50% 80% at 50% -27%)" }}
+              exit={{ clipPath: "ellipse(100% 100% at 50% 0%)" }}
             >
               <MotionBox
                 w={585}
@@ -140,7 +140,9 @@ const Home: NextPage = () => {
                   borderColor="orange.500"
                   borderStyle="dashed"
                   position="relative"
-                  animate={{ rotate: `-${ROTATION * active}deg` }}
+                  animate={{
+                    rotate: `-${ROTATION * active}deg`,
+                  }}
                 >
                   <Box w="1px" h="1px" position="relative">
                     {foods.map((item, idx) => (
@@ -287,4 +289,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
