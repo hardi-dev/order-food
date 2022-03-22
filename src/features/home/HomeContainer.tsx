@@ -19,6 +19,7 @@ import {
   TextProps,
   FlexProps,
   ImageProps,
+  BoxProps,
 } from "@chakra-ui/react";
 import { Layout } from "@/components/Layout";
 import Link from "next/link";
@@ -27,11 +28,11 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import foods from "@/data/foods.json";
 
 const MotionFlex = motion<FlexProps>(Flex);
+const MotionBox = motion<BoxProps>(Box);
 const MotionImage = motion<ImageProps>(Image);
 const MotionText = motion<TextProps>(Text);
 const MotionHeading = motion<HeadingProps>(Heading);
 const MotionIconButton = motion<IconButtonProps>(IconButton);
-const MotionButton = motion<ButtonProps>(Button);
 const MotionGrid = motion<GridProps>(Grid);
 
 const ButtonScaleVariants: Variants = {
@@ -99,7 +100,7 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      <Box h="100vh" w="100vw">
+      <MotionBox h="100vh" w="100vw">
         <Container maxW="container.xl">
           <Grid
             justifyItems="center"
@@ -109,16 +110,26 @@ const Home: NextPage = () => {
             width="full"
             h="100vh"
           >
-            <Flex
+            <MotionFlex
               position="absolute"
               w="161vw"
               h="100%"
               bg="orange.100"
-              clipPath="circle(60% at 50% -80%)"
               justifyContent="center"
               alignItems="center"
+              initial={{ clipPath: "circle(0% at 50% 0%)" }}
+              animate={{ clipPath: "circle(60% at 50% -80%)" }}
+              exit={{ clipPath: "circle(100% at 50% -80%)" }}
             >
-              <Box w={585} h={560} mt={150}>
+              <MotionBox
+                w={585}
+                h={560}
+                mt={150}
+                variants={FadeUpVariants}
+                initial="hidden"
+                animate="visible"
+                exit={{ opacity: 0 }}
+              >
                 <MotionFlex
                   w={560}
                   h={560}
@@ -154,8 +165,8 @@ const Home: NextPage = () => {
                     ))}
                   </Box>
                 </MotionFlex>
-              </Box>
-            </Flex>
+              </MotionBox>
+            </MotionFlex>
             <Flex
               position="absolute"
               w="100vw"
@@ -270,9 +281,10 @@ const Home: NextPage = () => {
             </MotionGrid>
           </Grid>
         </Container>
-      </Box>
+      </MotionBox>
     </Layout>
   );
 };
 
 export default Home;
+

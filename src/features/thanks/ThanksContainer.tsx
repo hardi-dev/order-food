@@ -13,12 +13,14 @@ import {
   TextProps,
   HeadingProps,
   ButtonProps,
+  BoxProps,
 } from "@chakra-ui/react";
 import foods from "@/data/foods.json";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 
+const MotionBox = motion<BoxProps>(Box);
 const MotionFlex = motion<FlexProps>(Flex);
 const MotionImage = motion<ImageProps>(Image);
 const MotionText = motion<TextProps>(Text);
@@ -60,7 +62,7 @@ const Thanks = () => {
 
   return (
     <Layout>
-      <Box h="100vh" w="100vw" bg="orange.100">
+      <MotionBox h="100vh" w="100vw" bg="orange.100">
         <Container maxW="container.xl" h="full">
           {!!food && (
             <MotionFlex
@@ -109,7 +111,7 @@ const Thanks = () => {
             </MotionFlex>
           )}
         </Container>
-      </Box>
+      </MotionBox>
     </Layout>
   );
 };
